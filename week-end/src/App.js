@@ -15,6 +15,7 @@ function App() {
         id: post.length + 1,
         text: newPostText,
         likes: 0,
+        unlikes: 0,
       };
       setPost([...post, newPost]);
       setNewPostText('');
@@ -22,20 +23,28 @@ function App() {
   };
 
   const handleLike = (postId) => {
-    const updatedPosts = post.map((post) => {
-      if (post.id === postId) {
-        return { ...post, likes: post.likes + 1 };
+    const updatedPosts = post.map((p) => {
+      if (p.id === postId) {
+        return { ...p, likes: p.likes + 1 };
       }
-      return post;
+      return p;
+    });
+    setPost(updatedPosts);
+  };
+
+  const handleUnlike = (postId) => {
+    const updatedPosts = post.map((p) => {
+      if (p.id === postId) {
+        return { ...p, unlikes: p.unlikes + 1 };
+      }
+      return p;
     });
     setPost(updatedPosts);
   };
 
   return (
-    <div className = "App">
-
-      <h1> Mini Social Media Feed </h1>
-
+    <div className="App">
+      <h1>Mini Social Media Feed</h1>
       <div id="PostForm" className="PostForm">
         <textarea
           rows="4"
@@ -44,20 +53,26 @@ function App() {
           value={newPostText}
           onChange={handlePostChange}
         />
-        <button onClick={handlePostSubmit} className = "PostButton"> Post </button>
+        <button onClick={handlePostSubmit} className="PostButton">
+          Post
+        </button>
       </div>
 
-        <div>
-          {post.map((post) => (
-            <div className="Post" key={post.id}>
-              <p>{post.text}</p>
+      <div>
+        {post.map((p) => (
+          <div className="Post" key={p.id}>
+            <p>{p.text}</p>
             <div>
-              <span className="LikeButton" onClick={() => handleLike(post.id)}> Like ({post.likes}) </span>
+              <span className="LikeButton" onClick={() => handleLike(p.id)}>
+                👍Likes({p.likes})
+              </span>
+              <span className="UnlikeButton" onClick={() => handleUnlike(p.id)}>
+                👎Dislike({p.unlikes})
+              </span>
             </div>
           </div>
         ))}
-        </div>
-
+      </div>
     </div>
   );
 }
